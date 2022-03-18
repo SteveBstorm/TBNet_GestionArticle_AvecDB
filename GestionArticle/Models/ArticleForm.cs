@@ -10,7 +10,7 @@ namespace GestionArticle.Models
         [Required]
         public string Name { get; set; }
         [Range(0, 1000000)]
-        public double Price { get; set; }
+        public decimal Price { get; set; }
 
         [StringLength(13, MinimumLength = 13)]
         public string EAN13 { get; set; }

@@ -39,7 +39,10 @@
         </form>
     </div>
 </div>
-
+@if(!string.IsNullOrWhiteSpace(ViewBag.Error))
+{
+    <span class="text-danger">@ViewBag.error</span>
+}
 <div>
     <a asp-action="Index">Back to List</a>
 </div>

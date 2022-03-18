@@ -2,19 +2,27 @@
 using GestionArticle.Services;
 using GestionArticle.Tools;
 using Microsoft.AspNetCore.Mvc;
+using DAL = ModelGlobal_DataAccessLayer.Services;
 
 namespace GestionArticle.Controllers
 {
     public class ArticleController : Controller
     {
+
+        private DAL.ArticleService _service;
+
+        public ArticleController()
+        {
+            _service = new DAL.ArticleService();
+        }
         public IActionResult Index()
         {
-            return View(ArticleService.GetAll());
+            return View(_service.GetAll().Select(a => a.ToASP()));
         }
 
         public IActionResult Details(int id)
         {
-            return View(ArticleService.GetById(id));
+            return View(_service.GetById(id).ToASP());
         }
 
         public IActionResult Create()
@@ -30,31 +38,35 @@ namespace GestionArticle.Controllers
                 return View(form);
             }
 
-            if (ArticleService.Create(form.ToData()))
+            try
             {
+                _service.Create(form.FormToDAL());
                 return RedirectToAction("Index");
             }
-
-            ViewBag.ErrorMessage = "Le nom des articles doivent être unique";
-            return View(form);
+            catch(Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+                return View(form);
+            }
+           
         }
 
         public IActionResult Delete(int id)
         {
-            ArticleService.Delete(id);
+            _service.Delete(id);
             return RedirectToAction("Index");
         }
 
         public IActionResult Edit(int id)
         {
-            return View(ArticleService.GetById(id).ToView());
+            return View(_service.GetById(id).ToFormView());
         }
         [HttpPost]
         public IActionResult Edit(ArticleForm f)
         {
             if(!ModelState.IsValid) return View(f);
 
-            ArticleService.Update(f.ToData());
+            _service.Update(f.FormToDAL());
 
             return RedirectToAction("Index");
         }
