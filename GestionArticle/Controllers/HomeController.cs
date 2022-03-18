@@ -1,5 +1,6 @@
 ﻿using GestionArticle.Models;
 using Microsoft.AspNetCore.Mvc;
+using ModelGlobal_DataAccessLayer.Repositories;
 using System.Diagnostics;
 
 namespace GestionArticle.Controllers
@@ -7,15 +8,21 @@ namespace GestionArticle.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private IArticleRepository _service;
+        public HomeController(IArticleRepository service, ILogger<HomeController> logger)
         {
             _logger = logger;
+            _service = service;
         }
+        public IActionResult Instance()
+        {
+            return Content(_service.InstanceID.ToString());
+        }
+
 
         public IActionResult Index()
         {
-            return View();
+            return View(_service.GetAll());
         }
 
         public IActionResult Privacy()

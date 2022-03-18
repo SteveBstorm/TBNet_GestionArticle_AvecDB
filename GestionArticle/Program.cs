@@ -1,3 +1,5 @@
+using ModelGlobal_DataAccessLayer.Repositories;
+using ModelGlobal_DataAccessLayer.Services;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,7 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-
+builder.Services.AddScoped<IArticleRepository, ArticleService>();
+//builder.Services.AddSingleton<IArticleRepository, ArticleService>();
+//builder.Services.AddTransient<IArticleRepository, ArticleService>();
 
 var app = builder.Build();
 

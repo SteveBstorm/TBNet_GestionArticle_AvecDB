@@ -1,5 +1,6 @@
 ﻿using AdoToolbox;
 using ModelGlobal_DataAccessLayer.Models;
+using ModelGlobal_DataAccessLayer.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -9,10 +10,12 @@ using System.Threading.Tasks;
 
 namespace ModelGlobal_DataAccessLayer.Services
 {
-    public class ArticleService
+    public class ArticleService : IArticleRepository
     {
+        public Guid InstanceID { get; set; } = Guid.NewGuid();
+
         private const string _connectionString = @"Data Source=DESKTOP-56GOFPS\DEVPERSO;Initial Catalog=CorrectArticle;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-    
+
         internal Article Converter(SqlDataReader reader)
         {
             return new Article
@@ -58,7 +61,7 @@ namespace ModelGlobal_DataAccessLayer.Services
             {
                 return cnx.ExecuteNonQuery(cmd) == 1;
             }
-            catch(SqlException ex)
+            catch (SqlException ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -89,5 +92,5 @@ namespace ModelGlobal_DataAccessLayer.Services
 
             return cnx.ExecuteNonQuery(cmd) == 1;
         }
-    }   
+    }
 }

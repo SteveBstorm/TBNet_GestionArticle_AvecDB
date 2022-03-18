@@ -1,23 +1,27 @@
 ﻿using GestionArticle.Models;
-using GestionArticle.Services;
 using GestionArticle.Tools;
 using Microsoft.AspNetCore.Mvc;
-using DAL = ModelGlobal_DataAccessLayer.Services;
+using ModelGlobal_DataAccessLayer.Repositories;
 
 namespace GestionArticle.Controllers
 {
     public class ArticleController : Controller
     {
 
-        private DAL.ArticleService _service;
+        private IArticleRepository _service;
 
-        public ArticleController()
+        public ArticleController(IArticleRepository service)
         {
-            _service = new DAL.ArticleService();
+            _service = service;
         }
         public IActionResult Index()
         {
             return View(_service.GetAll().Select(a => a.ToASP()));
+        }
+
+        public IActionResult Instance()
+        {
+            return Content(_service.InstanceID.ToString());
         }
 
         public IActionResult Details(int id)
