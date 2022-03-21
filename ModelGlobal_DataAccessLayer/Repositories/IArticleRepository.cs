@@ -15,6 +15,7 @@ namespace ModelGlobal_DataAccessLayer.Repositories
         bool Update(Article article);
         bool Delete(int Id);
         Guid InstanceID { get; set; }
+        IEnumerable<Article> GetByCategory(int Id);
 
     }
 }

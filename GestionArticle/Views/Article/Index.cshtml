@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GestionArticle.Models.Article>
+﻿@model IndexViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -9,29 +9,36 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<p>
+    <a asp-action="Index" asp-route-id="0">Annuler le filtre</a> 
+    @foreach(var c in Model.Categories)
+    {
+        <a asp-action="Index" asp-route-id="@c.Id">@c.Name | </a> 
+    }
+</p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                Id
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Nom Article
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                Prix TVAC
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EAN13)
+                EAN13
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Description
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Articles) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Id)

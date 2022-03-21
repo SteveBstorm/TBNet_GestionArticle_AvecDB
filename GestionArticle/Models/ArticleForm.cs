@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ModelGlobal_DataAccessLayer.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace GestionArticle.Models
@@ -15,5 +16,10 @@ namespace GestionArticle.Models
         [StringLength(13, MinimumLength = 13)]
         public string EAN13 { get; set; }
         public string Description { get; set; }
+
+        public IEnumerable<Category>? CategoryList { get; set; }
+        [Required]
+        public int CategoryId { get; set; }
+
     }
 }

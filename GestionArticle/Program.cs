@@ -8,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IArticleRepository, ArticleService>();
+builder.Services.AddScoped<ICategoryRepository, CategoryService>();
+
 //builder.Services.AddSingleton<IArticleRepository, ArticleService>();
 //builder.Services.AddTransient<IArticleRepository, ArticleService>();
 

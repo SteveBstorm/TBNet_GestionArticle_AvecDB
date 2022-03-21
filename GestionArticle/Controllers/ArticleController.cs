@@ -9,16 +9,25 @@ namespace GestionArticle.Controllers
     {
 
         private IArticleRepository _service;
+        private ICategoryRepository _catService;
 
-        public ArticleController(IArticleRepository service)
+        public ArticleController(IArticleRepository service, ICategoryRepository catService)
         {
             _service = service;
+            _catService = catService;
         }
-        public IActionResult Index()
+        public IActionResult Index(int id = 0)
         {
-            return View(_service.GetAll().Select(a => a.ToASP()));
+            IndexViewModel model = new IndexViewModel();
+            
+            if (id == 0)
+                model.Articles = _service.GetAll().Select(a => a.ToASP());
+            else
+                //model.Articles = _service.GetAll().Where(c => c.CategoryId == id).Select(a => a.ToASP());
+                model.Articles = _service.GetByCategory(id).Select(a => a.ToASP());
+            model.Categories = _catService.GetAll();
+            return View(model);
         }
-
         public IActionResult Instance()
         {
             return Content(_service.InstanceID.ToString());
@@ -26,17 +35,22 @@ namespace GestionArticle.Controllers
 
         public IActionResult Details(int id)
         {
-            return View(_service.GetById(id).ToASP());
+            Article currentArticle = _service.GetById(id).ToASP();
+            currentArticle.CategoryName = _catService.GetNameById(currentArticle.CategoryId);
+            return View(currentArticle);
         }
 
         public IActionResult Create()
         {
-            return View();
+            ArticleForm form = new ArticleForm();
+            form.CategoryList = _catService.GetAll();
+            return View(form);
         }
 
         [HttpPost]
         public IActionResult Create(ArticleForm form)
         {
+            form.CategoryList = _catService.GetAll();
             if (!ModelState.IsValid)
             {
                 return View(form);

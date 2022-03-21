@@ -14,7 +14,8 @@ namespace GestionArticle.Tools
                 Name = a.Name,
                 EAN13 = a.EAN13,
                 Price = a.Price,
-                Description = a.Description
+                Description = a.Description,
+                CategoryId = a.CategoryId
             };
         }
 
@@ -26,7 +27,8 @@ namespace GestionArticle.Tools
                 Name = f.Name,
                 EAN13 = f.EAN13,
                 Price = f.Price,
-                Description = f.Description
+                Description = f.Description,
+                CategoryId = f.CategoryId
             };
         }
 
@@ -38,7 +40,8 @@ namespace GestionArticle.Tools
                 Name = f.Name,
                 EAN13 = f.EAN13,
                 Price = f.Price,
-                Description = f.Description
+                Description = f.Description,
+                CategoryId=f.CategoryId
             };
         }
     }

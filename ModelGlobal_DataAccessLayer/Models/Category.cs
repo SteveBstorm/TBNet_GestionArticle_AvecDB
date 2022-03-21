@@ -6,13 +6,9 @@ using System.Threading.Tasks;
 
 namespace ModelGlobal_DataAccessLayer.Models
 {
-    public class Article
+    public class Category
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public decimal Price { get; set; }
-        public string EAN13 { get; set; }
-        public string Description { get; set; }
-        public int CategoryId { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AdoToolbox;
+using Microsoft.Extensions.Configuration;
 using ModelGlobal_DataAccessLayer.Models;
 using ModelGlobal_DataAccessLayer.Repositories;
 using System;
@@ -14,7 +15,15 @@ namespace ModelGlobal_DataAccessLayer.Services
     {
         public Guid InstanceID { get; set; } = Guid.NewGuid();
 
-        private const string _connectionString = @"Data Source=DESKTOP-56GOFPS\DEVPERSO;Initial Catalog=CorrectArticle;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private string _connectionString; 
+
+        private readonly IConfiguration _config;
+
+        public ArticleService(IConfiguration config)
+        {
+            _config = config;
+            _connectionString = _config.GetConnectionString("default");
+        }
 
         internal Article Converter(SqlDataReader reader)
         {
@@ -24,7 +33,8 @@ namespace ModelGlobal_DataAccessLayer.Services
                 Name = reader["Name"].ToString(),
                 EAN13 = reader["EAN13"].ToString(),
                 Price = (decimal)reader["Price"],
-                Description = reader["Description"].ToString()
+                Description = reader["Description"].ToString(),
+                CategoryId = (int)reader["CategoryId"]
             };
         }
 
@@ -33,6 +43,16 @@ namespace ModelGlobal_DataAccessLayer.Services
             Connection cnx = new Connection(_connectionString);
 
             Command cmd = new Command("SELECT * FROM Article");
+
+            return cnx.ExecuteReader(cmd, Converter);
+        }
+
+        public IEnumerable<Article> GetByCategory(int Id)
+        {
+            Connection cnx = new Connection(_connectionString);
+
+            Command cmd = new Command("SELECT * FROM Article WHERE CategoryId = @Id");
+            cmd.AddParameter("Id", Id);
 
             return cnx.ExecuteReader(cmd, Converter);
         }
@@ -57,6 +77,7 @@ namespace ModelGlobal_DataAccessLayer.Services
             cmd.AddParameter("EAN13", article.EAN13);
             cmd.AddParameter("price", article.Price);
             cmd.AddParameter("desc", article.Description);
+            cmd.AddParameter("catId", article.CategoryId);
             try
             {
                 return cnx.ExecuteNonQuery(cmd) == 1;
