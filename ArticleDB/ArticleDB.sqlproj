@@ -58,6 +58,8 @@
     <Folder Include="Properties" />
     <Folder Include="Tables" />
     <Folder Include="StoredProc" />
+    <Folder Include="functions" />
+    <Folder Include="Views" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Article.sql" />
@@ -66,8 +68,16 @@
     <Build Include="StoredProc\DeleteArticle.sql" />
     <Build Include="Tables\Category.sql" />
     <Build Include="StoredProc\AddCategory.sql" />
+    <Build Include="Tables\AppUser.sql" />
+    <Build Include="StoredProc\AddUser.sql" />
+    <Build Include="StoredProc\LoginUser.sql" />
+    <Build Include="functions\GetSecret.sql" />
+    <Build Include="Views\V_AppUser.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ArticleDB.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Script.PostDeployment1.sql" />
   </ItemGroup>
 </Project>

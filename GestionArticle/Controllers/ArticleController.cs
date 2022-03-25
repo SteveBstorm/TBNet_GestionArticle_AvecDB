@@ -1,5 +1,6 @@
 ﻿using GestionArticle.Models;
 using GestionArticle.Tools;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ModelGlobal_DataAccessLayer.Repositories;
 
@@ -25,7 +26,9 @@ namespace GestionArticle.Controllers
             else
                 //model.Articles = _service.GetAll().Where(c => c.CategoryId == id).Select(a => a.ToASP());
                 model.Articles = _service.GetByCategory(id).Select(a => a.ToASP());
+
             model.Categories = _catService.GetAll();
+
             return View(model);
         }
         public IActionResult Instance()
@@ -40,6 +43,7 @@ namespace GestionArticle.Controllers
             return View(currentArticle);
         }
 
+        [AuthRequired]
         public IActionResult Create()
         {
             ArticleForm form = new ArticleForm();

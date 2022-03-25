@@ -1,9 +1,11 @@
-﻿@model GestionArticle.Models.Article
-
+﻿@using GestionArticle.Tools
+@model GestionArticle.Models.Article
+@inject SessionManager _session
 @{
     ViewData["Title"] = "Details";
 }
-
+@*<p>Bonjour : @ViewContext.HttpContext.Session.GetString("ScreenName")</p>*@
+<p>Bonjour : @_session.CurrentUser?.ScreenName</p>
 <h1>Details</h1>
 
 <div>

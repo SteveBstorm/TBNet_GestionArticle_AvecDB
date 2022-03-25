@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using GestionArticle.Tools
+@inject SessionManager _session
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -28,9 +30,23 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Article" asp-action="Index">Gestion Article</a>
                         </li>
-                         <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Catégories</a>
                         </li>
+                        @*@if (@ViewContext.HttpContext.Session.GetString("ScreenName") == null)*@
+                        @if(_session.CurrentUser is null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Login">Connexion</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="LogOut">Déconnexion</a>
+                            </li>
+                        }
+                        
                     </ul>
                 </div>
             </div>

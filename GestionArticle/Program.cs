@@ -1,3 +1,5 @@
+using GestionArticle.Tools;
+using Microsoft.AspNetCore.Authorization;
 using ModelGlobal_DataAccessLayer.Repositories;
 using ModelGlobal_DataAccessLayer.Services;
 using System.Globalization;
@@ -7,8 +9,24 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddDistributedMemoryCache();
+
+
+builder.Services.AddSession(options =>
+    {
+        options.Cookie.Name = "GestionArticleCookie";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.IsEssential = true;
+        options.IdleTimeout = TimeSpan.FromMinutes(10);
+    });
+
 builder.Services.AddScoped<IArticleRepository, ArticleService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryService>();
+
+builder.Services.AddScoped<IAppUserRepository, AppUserService>();
+
+builder.Services.AddScoped<SessionManager>();
 
 //builder.Services.AddSingleton<IArticleRepository, ArticleService>();
 //builder.Services.AddTransient<IArticleRepository, ArticleService>();
@@ -33,6 +51,7 @@ CultureInfo.DefaultThreadCurrentUICulture = culture;
 app.UseRequestLocalization();
 
 #endregion
+app.UseSession();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

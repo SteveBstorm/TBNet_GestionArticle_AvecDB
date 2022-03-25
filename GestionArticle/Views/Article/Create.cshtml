@@ -1,9 +1,11 @@
-﻿@model GestionArticle.Models.ArticleForm
-
+﻿@using GestionArticle.Tools
+@model GestionArticle.Models.ArticleForm
+@inject SessionManager _session
 @{
     ViewData["Title"] = "Create";
 }
-
+@*<p>Bonjour : @ViewContext.HttpContext.Session.GetString("ScreenName")</p>*@
+<p>Bonjour : @_session.CurrentUser?.ScreenName</p>
 <h1>Create</h1>
 
 <h4>ArticleForm</h4>
